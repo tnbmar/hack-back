@@ -5,6 +5,12 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum TaskTypeName {
+  DEFAULT
+  DRAGABLE
+  CODE
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -32,11 +38,7 @@ model Reward {
   name  String @unique
 }
 
-enum TaskTypeName {
-  default
-  gragable
-  code
-}
+
 
 model Task {
   id                Int          @id @default(autoincrement())
