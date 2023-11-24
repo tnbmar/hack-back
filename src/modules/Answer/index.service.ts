@@ -26,9 +26,18 @@ class AnswerService {
     }
   }
 
-  async updateAnswer(id: number, content: string) {
+  async updateAnswer(id: number, content: string, is_true: boolean) {
     try {
-      const answer = await prisma.answer.update({ where: { id: id }, data: { content } });
+      const answer = await prisma.answer.update({
+        where: { id: id },
+        data: { content, is_true },
+      });
+      if (answer.is_true) {
+        await prisma.task.update({
+          where: { id: answer.task_id },
+          data: { current_answer_id: id },
+        });
+      }
       return answer;
     } catch (e) {
       console.error({ e });
@@ -48,6 +57,12 @@ class AnswerService {
       const newAnswer = await prisma.answer.create({
         data: { content: answer.content, task_id: answer.taskId },
       });
+      if (answer.is_true) {
+        await prisma.task.update({
+          where: { id: answer.taskId },
+          data: { current_answer_id: newAnswer.id },
+        });
+      }
       return newAnswer;
     } catch (e) {
       console.error({ e });

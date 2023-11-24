@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "description": "API HACKATON_BACK."
   },
-  "host": "192.168.1.47:3000",
+  "host": "localhost:3000",
   "basePath": "/api",
   "schemes": [
     "http"
@@ -285,23 +285,18 @@
             "schema": {
               "type": "object",
               "properties": {
-                "name": {
+                "content": {
                   "type": "string",
                   "example": "Test"
                 },
                 "lessonId": {
                   "type": "number",
                   "example": 1
-                },
-                "currentAnswerId": {
-                  "type": "number",
-                  "example": 1
                 }
               },
               "required": [
-                "name",
-                "lessonId",
-                "currentAnswerId"
+                "content",
+                "lessonId"
               ]
             }
           }
@@ -1064,6 +1059,9 @@
               "properties": {
                 "content": {
                   "example": "any"
+                },
+                "is_true": {
+                  "example": "any"
                 }
               }
             }
@@ -1095,18 +1093,23 @@
             "schema": {
               "type": "object",
               "properties": {
-                "name": {
+                "content": {
                   "type": "string",
                   "example": "Test"
                 },
                 "taskId": {
                   "type": "number",
                   "example": 1
+                },
+                "is_true": {
+                  "type": "boolean",
+                  "example": false
                 }
               },
               "required": [
-                "name",
-                "taskId"
+                "content",
+                "taskId",
+                "is_true"
               ]
             }
           }

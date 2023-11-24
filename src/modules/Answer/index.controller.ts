@@ -55,7 +55,12 @@ answerController.patch("/answers/:id", async (req: Request, res: Response) => {
     if (!token) throw Error("token field empty");
     const user = await userService.getUserByToken(token);
     const answer =
-      user && (await answerService.updateAnswer(+req.params.id, req.body.content));
+      user &&
+      (await answerService.updateAnswer(
+        +req.params.id,
+        req.body.content,
+        req.body.is_true
+      ));
     res.status(200).json(answer);
   } catch (error: any) {
     const errorStatus = checkError(error);
@@ -69,8 +74,9 @@ answerController.post("/answers", async (req: Request, res: Response) => {
                 in: 'body',
                 description: '',
                 schema: {
-                    $name: 'Test',
+                    $content: 'Test',
                     $taskId: 1,
+                    $is_true:false
 
 
                 }

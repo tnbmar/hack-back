@@ -68,9 +68,8 @@ taskController.post("/tasks", async (req: Request, res: Response) => {
                 in: 'body',
                 description: '',
                 schema: {
-                    $name: 'Test',
+                    $content: 'Test',
                     $lessonId: 1,
-                    $currentAnswerId:1,
 
 
                 }
