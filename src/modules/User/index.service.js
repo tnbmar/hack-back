@@ -4,11 +4,12 @@ import sha256 from "sha256";
 
 class UserService {
   async createUser(newUserDto) {
-    const { username, password, email, role } = newUserDto;
-    const userRole = role ? role : "user";
+    const { username, password, email } = newUserDto;
+    const taskCount = await prisma.task.count();
+
     try {
       const newUser = await prisma.user.create({
-        data: { username, password: sha256(password), email: email, role: userRole },
+        data: { username, password: sha256(password), email: email, taskCount },
       });
       return newUser;
     } catch (e) {
@@ -17,9 +18,15 @@ class UserService {
   }
 
   async getUserById(id) {
+    const taskCount = await prisma.task.count();
     try {
+      const newUser = await prisma.user.update({
+        where: { id },
+        data: { taskCount },
+      });
       const user = await prisma.user.findFirst({
         where: { id },
+        include: { answeredTasks: true },
       });
       if (!user) throw new Error("Пользователь не найден");
       return user;
@@ -38,9 +45,24 @@ class UserService {
     }
   }
 
+  async getLeaders() {
+    try {
+      const users = await prisma.user.findMany({
+        take: 5,
+      });
+      const topUsers = users.sort(
+        (a, b) => b.answeredTasks?.length - a.answeredTasks?.length
+      );
+      if (!topUsers) throw new Error("Лидеры не найдены");
+      return topUsers;
+    } catch (e) {
+      console.log(e);
+      throw new Error(e);
+    }
+  }
+
   async getUserByToken(token) {
     const id = encodeToken(token);
-
     if (id) {
       const user = await this.getUserById(id);
       return user;
@@ -62,15 +84,6 @@ class UserService {
 
   async deleteUser({ id }) {
     await prisma.user.delete({ where: { id } });
-  }
-
-  async changeRole(id, role) {
-    try {
-      const user = await prisma.user.update({ where: { id: id }, data: { role } });
-      return user;
-    } catch (e) {
-      console.error({ e });
-    }
   }
 }
 

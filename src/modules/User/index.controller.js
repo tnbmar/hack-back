@@ -30,20 +30,22 @@ userController.get("/users", async (req, res) => {
   }
 });
 
-userController.delete("/users", async (req, res) => {
+userController.get("/leaders", async (req, res) => {
   // #swagger.tags = ['Users']
   try {
-    const user = await userService.deleteUser(req.body);
-    res.status(200).json(user);
+    const leaders = await userService.getLeaders();
+    if (leaders) {
+      res.status(200).json({ count: leaders?.length, results: leaders });
+    }
   } catch (error) {
     res.status(400).json({ error });
   }
 });
 
-userController.patch("/users-role/:id", async (req, res) => {
+userController.delete("/users", async (req, res) => {
   // #swagger.tags = ['Users']
   try {
-    const user = await userService.changeRole(+req.params.id, req.body.role);
+    const user = await userService.deleteUser(req.body);
     res.status(200).json(user);
   } catch (error) {
     res.status(400).json({ error });

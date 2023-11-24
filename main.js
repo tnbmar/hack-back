@@ -15,7 +15,8 @@ dotenvFlow.config();
 export const app = express();
 
 generateAdminJS();
-
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 const httpServer = createServer(app);
 app.use(
   cors({
@@ -30,8 +31,6 @@ app.use(
 app.use("/api", ...customControllers);
 app.use("/media", express.static("src/images"));
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 async function bootstrap() {

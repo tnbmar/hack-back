@@ -101,7 +101,7 @@ taskController.post("/check-answer", async (req, res) => {
     const token = req.headers.authorization;
     if (!token) throw Error("token field empty");
     const user = await userService.getUserByToken(token);
-    const task = user && (await taskService.checkTask(req.body));
+    const task = user && (await taskService.checkTask(req.body, user));
     res.status(200).json(task);
   } catch (error) {
     const errorStatus = checkError(error);
