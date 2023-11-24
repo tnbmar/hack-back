@@ -1,22 +1,29 @@
 {
   "name": "hackaton_back",
   "version": "1.0.0",
-  "main": "main.ts",
+  "main": "main.js",
+  "type": "module",
   "scripts": {
     "dev": "nodemon",
     "start": "node dist/main.js",
     "build": "tsc",
-    "swagger": "node src/swagger/index.js"
+    "swagger": "node src/swagger/index.cjs"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@adminjs/express": "^6.1.0",
+    "@adminjs/prisma": "^5.0.1",
     "@prisma/client": "^5.6.0",
+    "adminjs": "^7.4.1",
+    "connect-pg-simple": "^9.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "dotenv-flow": "^4.0.1",
     "express": "^4.18.2",
+    "express-formidable": "^1.2.0",
+    "express-session": "^1.17.3",
     "glob": "^10.3.10",
     "http": "^0.0.1-security",
     "jsonwebtoken": "^9.0.2",
@@ -24,6 +31,7 @@
     "sha256": "^0.2.0",
     "swagger-autogen": "^2.23.7",
     "swagger-ui-express": "^5.0.0",
+    "tslib": "^2.6.2",
     "tsoa": "^5.1.1"
   },
   "devDependencies": {
