@@ -21,6 +21,12 @@ model User {
   //
   taskCount Int? @default(0)
   answeredTasks Task[] @relation("UserAnsweredTasks")
+  answeredLessons Lesson[] @relation("UserAnsweredLessons")
+  answeredModules Module[] @relation("UserAnsweredModules")
+  answeredSubjects Subject[] @relation("UserAnsweredSubjects")
+
+
+
 
   
 }
@@ -49,6 +55,12 @@ model Subject {
   id      Int      @id @default(autoincrement())
   name    String   @unique
   modules Module[] @relation("SubjectModules")
+
+   //
+  answered_id Int?
+  answeredSubject    User?  @relation("UserAnsweredSubjects", fields: [answered_id], references: [id])
+
+  
 }
 
 model Module {
@@ -57,6 +69,9 @@ model Module {
   subject_id Int
   subject    Subject  @relation("SubjectModules", fields: [subject_id], references: [id])
   lessons    Lesson[] @relation("ModulesLessons")
+   //
+  answered_id Int?
+  answeredModule    User?  @relation("UserAnsweredModules", fields: [answered_id], references: [id])
 }
 
 model Lesson {
@@ -65,6 +80,9 @@ model Lesson {
   module_id Int
   module    Module @relation("ModulesLessons", fields: [module_id], references: [id])
   tasks     Task[] @relation("LessonsTasks")
+  //
+  answered_id Int?
+  answeredLesson    User?  @relation("UserAnsweredLessons", fields: [answered_id], references: [id])
 }
 
 
