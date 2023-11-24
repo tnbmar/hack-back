@@ -1,0 +1,74 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  username  String    @unique
+  password  String
+  email     String
+  role      String
+  createdAt DateTime  @default(now())
+  subjects  Subject[]
+  rewards   Reward[]
+}
+
+model Reward {
+  users User[]
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+}
+
+model Subject {
+  users   User[]
+  id      Int      @id @default(autoincrement())
+  name    String   @unique
+  modules Module[] @relation("SubjectModules")
+}
+
+model Module {
+  id         Int      @id @default(autoincrement())
+  name       String   @unique
+  subject_id Int
+  subject    Subject  @relation("SubjectModules", fields: [subject_id], references: [id])
+  lessons    Lesson[] @relation("ModulesLessons")
+}
+
+model Lesson {
+  id        Int    @id @default(autoincrement())
+  name      String @unique
+  module_id Int
+  module    Module @relation("ModulesLessons", fields: [module_id], references: [id])
+  tasks     Task[] @relation("LessonsTasks")
+}
+
+model Task {
+  id                Int      @id @default(autoincrement())
+  content           String
+  lesson_id         Int
+  lesson            Lesson   @relation("LessonsTasks", fields: [lesson_id], references: [id])
+  answers           Answer[] @relation("TasksAnswer")
+  current_answer    Answer?  @relation("TaskCurrentAnswer", fields: [current_answer_id], references: [id])
+  current_answer_id Int?     @unique
+}
+
+model Answer {
+  id      Int    @id @default(autoincrement())
+  content String
+  task_id Int
+  task    Task   @relation("TasksAnswer", fields: [task_id], references: [id])
+  tasks   Task[] @relation("TaskCurrentAnswer")
+}
+
+model Wallet {
+  id      Int    @id @default(autoincrement())
+  address String
+}
