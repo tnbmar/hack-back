@@ -12,7 +12,7 @@ const doc = {
     version: "1.0.0",
     description: "API HACKATON_BACK.",
   },
-  host: "localhost:3000",
+  host: "localhost:3003",
   basePath: "/api",
   schemes: ["http"],
   securityDefinitions: {
