@@ -51,7 +51,6 @@ class TaskService {
         data: {
           content: task.content,
           lesson_id: task.lessonId,
-          current_answer_id: task.currentAnswerId,
         },
       });
       return newTask;

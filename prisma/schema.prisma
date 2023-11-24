@@ -61,11 +61,12 @@ model Task {
 }
 
 model Answer {
-  id      Int    @id @default(autoincrement())
+  id      Int     @id @default(autoincrement())
   content String
   task_id Int
-  task    Task   @relation("TasksAnswer", fields: [task_id], references: [id])
-  tasks   Task[] @relation("TaskCurrentAnswer")
+  task    Task    @relation("TasksAnswer", fields: [task_id], references: [id])
+  tasks   Task[]  @relation("TaskCurrentAnswer")
+  is_true Boolean @default(false)
 }
 
 model Wallet {
