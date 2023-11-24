@@ -18,15 +18,7 @@ generateAdminJS();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 const httpServer = createServer(app);
-app.use(
-  cors({
-    origin: "http://192.168.1.45",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    preflightContinue: false,
-    optionsSuccessStatus: 204,
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+app.use(cors());
 
 app.use("/api", ...customControllers);
 app.use("/media", express.static("src/images"));

@@ -15,11 +15,3 @@ services:
       - "3003:3000"
     depends_on:
       - db14
-  prisma:
-    build: .
-    command: npx prisma studio
-    restart: always
-    ports:
-      - "5555:5555"
-    depends_on:
-      - db14
