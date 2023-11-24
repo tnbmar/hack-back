@@ -58,10 +58,14 @@ class TaskService {
     }
   }
 
-  async checkTask(task) {
+  async checkTask(task, user) {
     try {
       const currentTask = await prisma.task.findFirst({
         where: { id: task.task_id, current_answer_id: task.answer_id },
+      });
+      await prisma.task.update({
+        where: { id: task.task_id },
+        data: { answered_id: user.id },
       });
       return !!currentTask;
     } catch (e) {

@@ -15,11 +15,27 @@ model User {
   username  String    @unique
   password  String
   email     String
-  role      String
   createdAt DateTime  @default(now())
   subjects  Subject[]
   rewards   Reward[]
+  //
+  taskCount Int? @default(0)
+  answeredTasks Task[] @relation("UserAnsweredTasks")
+
   
+}
+
+model Task {
+  id                Int      @id @default(autoincrement())
+  content           String
+  lesson_id         Int
+  lesson            Lesson   @relation("LessonsTasks", fields: [lesson_id], references: [id])
+  answers           Answer[] @relation("TasksAnswer")
+  current_answer    Answer?  @relation("TaskCurrentAnswer", fields: [current_answer_id], references: [id])
+  current_answer_id Int?     @unique
+  //
+  answered_id Int?
+  answeredTask    User?  @relation("UserAnsweredTasks", fields: [answered_id], references: [id])
 }
 
 model Reward {
@@ -51,15 +67,7 @@ model Lesson {
   tasks     Task[] @relation("LessonsTasks")
 }
 
-model Task {
-  id                Int      @id @default(autoincrement())
-  content           String
-  lesson_id         Int
-  lesson            Lesson   @relation("LessonsTasks", fields: [lesson_id], references: [id])
-  answers           Answer[] @relation("TasksAnswer")
-  current_answer    Answer?  @relation("TaskCurrentAnswer", fields: [current_answer_id], references: [id])
-  current_answer_id Int?     @unique
-}
+
 
 model Answer {
   id      Int     @id @default(autoincrement())

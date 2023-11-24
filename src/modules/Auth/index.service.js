@@ -34,34 +34,11 @@ class AuthService {
         req.body.username,
         req.body.password
       );
-
       if (user) {
         const token = decodeToken(user.id);
         return res.status(200).json({ token, user });
       } else {
         return res.status(403).json("User not found");
-      }
-    } catch (error) {
-      return res.status(500);
-    }
-  }
-
-  async authentificationForAdmin(req, res) {
-    try {
-      if (req.body.role === "admin") {
-        const user = await userService.getUserByUsernameAndPassword(
-          req.body.username,
-          req.body.password
-        );
-
-        if (user) {
-          const token = decodeToken(user.id);
-          return res.status(200).json({ token, user });
-        } else {
-          return res.status(403).json("User not found");
-        }
-      } else {
-        return res.status(403).json("Not admin");
       }
     } catch (error) {
       return res.status(500);
