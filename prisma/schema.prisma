@@ -19,6 +19,7 @@ model User {
   createdAt DateTime  @default(now())
   subjects  Subject[]
   rewards   Reward[]
+  
 }
 
 model Reward {
