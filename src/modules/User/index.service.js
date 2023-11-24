@@ -1,5 +1,6 @@
 import prisma from "../../database/index.js";
 import { encodeToken } from "../../utils/encodeToken.js";
+import rewardService from "../Reward/index.service.js";
 import sha256 from "sha256";
 
 class UserService {
@@ -11,6 +12,31 @@ class UserService {
       const newUser = await prisma.user.create({
         data: { username, password: sha256(password), email: email, taskCount },
       });
+      const regReward = await prisma.reward.findFirst({ where: { name: "New" } });
+      if (regReward) {
+        await prisma.user.update({
+          where: { id: newUser.id },
+          data: {
+            rewards: {
+              connect: {
+                id: regReward.id,
+              },
+            },
+          },
+        });
+      } else {
+        const newReward = await prisma.reward.create({ data: { name: "New" } });
+        await prisma.user.update({
+          where: { id: newUser.id },
+          data: {
+            rewards: {
+              connect: {
+                id: newReward.id,
+              },
+            },
+          },
+        });
+      }
       return newUser;
     } catch (e) {
       console.error({ e });
@@ -31,6 +57,7 @@ class UserService {
           answeredLessons: true,
           answeredModules: true,
           answeredSubjects: true,
+          rewards: true,
         },
       });
       if (!user) throw new Error("Пользователь не найден");

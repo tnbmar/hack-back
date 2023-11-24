@@ -11,37 +11,19 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  username  String    @unique
-  password  String
-  email     String
-  createdAt DateTime  @default(now())
-  subjects  Subject[]
-  rewards   Reward[]
+  id               Int       @id @default(autoincrement())
+  username         String    @unique
+  password         String
+  email            String
+  createdAt        DateTime  @default(now())
+  subjects         Subject[]
+  rewards          Reward[]
   //
-  taskCount Int? @default(0)
-  answeredTasks Task[] @relation("UserAnsweredTasks")
-  answeredLessons Lesson[] @relation("UserAnsweredLessons")
-  answeredModules Module[] @relation("UserAnsweredModules")
+  taskCount        Int?      @default(0)
+  answeredTasks    Task[]    @relation("UserAnsweredTasks")
+  answeredLessons  Lesson[]  @relation("UserAnsweredLessons")
+  answeredModules  Module[]  @relation("UserAnsweredModules")
   answeredSubjects Subject[] @relation("UserAnsweredSubjects")
-
-
-
-
-  
-}
-
-model Task {
-  id                Int      @id @default(autoincrement())
-  content           String
-  lesson_id         Int
-  lesson            Lesson   @relation("LessonsTasks", fields: [lesson_id], references: [id])
-  answers           Answer[] @relation("TasksAnswer")
-  current_answer    Answer?  @relation("TaskCurrentAnswer", fields: [current_answer_id], references: [id])
-  current_answer_id Int?     @unique
-  //
-  answered_id Int?
-  answeredTask    User?  @relation("UserAnsweredTasks", fields: [answered_id], references: [id])
 }
 
 model Reward {
@@ -50,42 +32,65 @@ model Reward {
   name  String @unique
 }
 
+enum TaskTypeName {
+  default
+  gragable
+  code
+}
+
+model Task {
+  id                Int          @id @default(autoincrement())
+  content           String
+  lesson_id         Int
+  lesson            Lesson       @relation("LessonsTasks", fields: [lesson_id], references: [id])
+  answers           Answer[]     @relation("TasksAnswer")
+  current_answer    Answer?      @relation("TaskCurrentAnswer", fields: [current_answer_id], references: [id])
+  current_answer_id Int?         @unique
+  //
+  answered_id       Int?
+  answeredTask      User?        @relation("UserAnsweredTasks", fields: [answered_id], references: [id])
+  type              TaskTypeName
+}
+
+model TaskType {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+}
+
+
+
 model Subject {
   users   User[]
   id      Int      @id @default(autoincrement())
   name    String   @unique
   modules Module[] @relation("SubjectModules")
 
-   //
-  answered_id Int?
-  answeredSubject    User?  @relation("UserAnsweredSubjects", fields: [answered_id], references: [id])
-
-  
+  //
+  answered_id     Int?
+  answeredSubject User? @relation("UserAnsweredSubjects", fields: [answered_id], references: [id])
 }
 
 model Module {
-  id         Int      @id @default(autoincrement())
-  name       String   @unique
-  subject_id Int
-  subject    Subject  @relation("SubjectModules", fields: [subject_id], references: [id])
-  lessons    Lesson[] @relation("ModulesLessons")
-   //
-  answered_id Int?
-  answeredModule    User?  @relation("UserAnsweredModules", fields: [answered_id], references: [id])
+  id             Int      @id @default(autoincrement())
+  name           String   @unique
+  subject_id     Int
+  subject        Subject  @relation("SubjectModules", fields: [subject_id], references: [id])
+  lessons        Lesson[] @relation("ModulesLessons")
+  //
+  answered_id    Int?
+  answeredModule User?    @relation("UserAnsweredModules", fields: [answered_id], references: [id])
 }
 
 model Lesson {
-  id        Int    @id @default(autoincrement())
-  name      String @unique
-  module_id Int
-  module    Module @relation("ModulesLessons", fields: [module_id], references: [id])
-  tasks     Task[] @relation("LessonsTasks")
+  id             Int    @id @default(autoincrement())
+  name           String @unique
+  module_id      Int
+  module         Module @relation("ModulesLessons", fields: [module_id], references: [id])
+  tasks          Task[] @relation("LessonsTasks")
   //
-  answered_id Int?
-  answeredLesson    User?  @relation("UserAnsweredLessons", fields: [answered_id], references: [id])
+  answered_id    Int?
+  answeredLesson User?  @relation("UserAnsweredLessons", fields: [answered_id], references: [id])
 }
-
-
 
 model Answer {
   id      Int     @id @default(autoincrement())
