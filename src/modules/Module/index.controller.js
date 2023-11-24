@@ -5,7 +5,7 @@ import checkError from "../../utils/checkError.js";
 
 export const moduleController = Router();
 
-moduleController.get("/modules/:subjectId", async (req, res) => {
+moduleController.get("/modules-on-subject/:subjectId", async (req, res) => {
   // #swagger.tags = ['Modules']
   try {
     const token = req.headers.authorization;

@@ -5,7 +5,7 @@ import checkError from "../../utils/checkError.js";
 
 export const lessonController = Router();
 
-lessonController.get("/lessons/:moduleId", async (req, res) => {
+lessonController.get("/lessons-on-module/:moduleId", async (req, res) => {
   // #swagger.tags = ['Lessons']
   try {
     const token = req.headers.authorization;

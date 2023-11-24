@@ -10,6 +10,15 @@ class RewardService {
       throw new Error(e);
     }
   }
+
+  async createReward(name) {
+    try {
+      const reward = await prisma.reward.create({ data: { name } });
+      return reward;
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
 }
 
 export default new RewardService();

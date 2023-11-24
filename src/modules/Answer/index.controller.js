@@ -6,7 +6,7 @@ import checkError from "../../utils/checkError.js";
 
 export const answerController = Router();
 
-answerController.get("/answers/:taskId", async (req, res) => {
+answerController.get("/answers-on-task/:taskId", async (req, res) => {
   // #swagger.tags = ['Answers']
   try {
     const token = req.headers.authorization;

@@ -115,6 +115,37 @@ class TaskService {
         where: { id: currentLesson.module_id },
         data: { answered_id: user.id },
       });
+      const myAnswersModules = await prisma.user.findFirst({
+        where: { id: user.id },
+        include: { answeredModules: true },
+      });
+      if (myAnswersModules.answeredModules.length === 1) {
+        const moduleReward = await prisma.reward.findFirst({ where: { name: "Module" } });
+        if (moduleReward) {
+          await prisma.user.update({
+            where: { id: user.id },
+            data: {
+              rewards: {
+                connect: {
+                  id: moduleReward.id,
+                },
+              },
+            },
+          });
+        } else {
+          const moduleReward = await prisma.reward.create({ data: { name: "Module" } });
+          await prisma.user.update({
+            where: { id: user.id },
+            data: {
+              rewards: {
+                connect: {
+                  id: moduleReward.id,
+                },
+              },
+            },
+          });
+        }
+      }
     }
     //SUbjcts
     const moduleISubjects = await prisma.module.findMany({
