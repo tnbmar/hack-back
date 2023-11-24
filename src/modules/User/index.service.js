@@ -20,13 +20,18 @@ class UserService {
   async getUserById(id) {
     const taskCount = await prisma.task.count();
     try {
-      const newUser = await prisma.user.update({
+      await prisma.user.update({
         where: { id },
         data: { taskCount },
       });
       const user = await prisma.user.findFirst({
         where: { id },
-        include: { answeredTasks: true },
+        include: {
+          answeredTasks: true,
+          answeredLessons: true,
+          answeredModules: true,
+          answeredSubjects: true,
+        },
       });
       if (!user) throw new Error("Пользователь не найден");
       return user;
