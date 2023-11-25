@@ -67,7 +67,10 @@ class TaskService {
         where: { id: task.task_id },
         data: { answered_id: user.id },
       });
-      await this.updateInfoTasks(currentTask, user);
+      const newcurrentTask = await prisma.task.findFirst({
+        where: { id: task.task_id },
+      });
+      await this.updateInfoTasks(newcurrentTask, user);
 
       return !!currentTask;
     } catch (e) {
@@ -77,6 +80,7 @@ class TaskService {
   async updateInfoTasks(currentTask, user) {
     //УРОКИ
     //вопросы в этом уроке
+    console.log(currentTask, "task");
     const tasksInLesson = await prisma.task.findMany({
       where: { lesson_id: currentTask.lesson_id },
     });
@@ -85,7 +89,6 @@ class TaskService {
     const myAnsweredTasksInLesson = await prisma.task.findMany({
       where: { lesson_id: currentTask.lesson_id, answered_id: user.id },
     });
-
     if (tasksInLesson.length === myAnsweredTasksInLesson.length) {
       await prisma.lesson.update({
         where: { id: currentTask.lesson_id },
