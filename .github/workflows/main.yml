@@ -14,11 +14,11 @@ jobs:
       - uses: actions/checkout@v3.3.0
       - name: Create .env file
         run: |
-          echo "DATABASE_USERNAME=${{ secrets.ENV }}" >> .env
+          echo "DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }}" >> .env
           echo "DATABASE_PASS=${{ secrets.DATABASE_PASS }}" >> .env
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
-          echo "SECRET_KEY=${{ secrets.BACK_HOST }}" >> .env
+          echo "BACK_HOST=${{ secrets.BACK_HOST }}" >> .env
           
       - name: Deploy dev
         run: docker-compose up -d --build
