@@ -12,9 +12,9 @@ const doc = {
     version: "1.0.0",
     description: "API HACKATON_BACK.",
   },
-  host: "localhost:3003",
+  host: process.env.BACK_HOST ? process.env.BACK_HOST : "localhost:3003",
   basePath: "/api",
-  schemes: ["http"],
+  schemes:process.env.BACK_HOST ? ["https"] : ["http"],
   securityDefinitions: {
     Bearer: {
       type: "apiKey",
