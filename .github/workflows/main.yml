@@ -18,5 +18,7 @@ jobs:
           echo "DATABASE_PASS=${{ secrets.DATABASE_PASS }}" >> .env
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
+          echo "SECRET_KEY=${{ secrets.BACK_HOST }}" >> .env
+          
       - name: Deploy dev
         run: docker-compose up -d --build
