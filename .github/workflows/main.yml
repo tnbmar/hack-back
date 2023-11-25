@@ -9,7 +9,7 @@ on:
 jobs:
   deploy_back:
     runs-on:
-      - hack-back
+      - back-hack
     steps:
       - uses: actions/checkout@v3.3.0
       - name: Create .env file
