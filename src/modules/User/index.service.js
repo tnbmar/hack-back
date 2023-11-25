@@ -81,6 +81,7 @@ class UserService {
     try {
       const users = await prisma.user.findMany({
         take: 5,
+        include: { answeredTasks: true },
       });
       const topUsers = users.sort(
         (a, b) => b.answeredTasks?.length - a.answeredTasks?.length
