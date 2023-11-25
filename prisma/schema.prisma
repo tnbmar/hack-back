@@ -66,6 +66,7 @@ model Subject {
   id      Int      @id @default(autoincrement())
   name    String   @unique
   modules Module[] @relation("SubjectModules")
+  image String @default("https://i.ibb.co/xgfGyyr/image-24.png")
 
   //
   answered_id     Int?
