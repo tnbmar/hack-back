@@ -1,0 +1,22 @@
+name: "Push: main"
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  deploy_back:
+    runs-on:
+      - hack-back
+    steps:
+      - uses: actions/checkout@v3.3.0
+      - name: Create .env file
+        run: |
+          echo "DATABASE_USERNAME=${{ secrets.ENV }}" >> .env
+          echo "DATABASE_PASS=${{ secrets.DATABASE_PASS }}" >> .env
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
+      - name: Deploy dev
+        run: docker-compose up -d --build
